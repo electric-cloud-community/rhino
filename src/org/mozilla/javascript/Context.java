@@ -283,6 +283,12 @@ public class Context
      */
     public static final int FEATURE_ENHANCED_JAVA_ACCESS = 13;
 
+	/**
+     * Enables non-ECMA style conversion from an object to a boolean under
+     * object control via getDefaultValue().
+     */
+    public static final int FEATURE_ALLOW_OBJECT_AS_BOOLEAN = 14;
+
     public static final String languageVersionProperty = "language version";
     public static final String errorReporterProperty   = "error reporter";
 
