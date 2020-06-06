@@ -288,6 +288,9 @@ public class ContextFactory
 
           case Context.FEATURE_ENUMERATE_IDS_FIRST:
               return cx.getLanguageVersion() >= Context.VERSION_ES6;
+			
+          case Context.FEATURE_ALLOW_OBJECT_AS_BOOLEAN:
+            return false;
         }
         // It is a bug to call the method with unknown featureIndex
         throw new IllegalArgumentException(String.valueOf(featureIndex));
