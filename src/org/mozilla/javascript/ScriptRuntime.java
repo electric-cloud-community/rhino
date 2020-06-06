@@ -18,6 +18,8 @@ import org.mozilla.javascript.v8dtoa.FastDtoa;
 import org.mozilla.javascript.xml.XMLObject;
 import org.mozilla.javascript.xml.XMLLib;
 
+import static org.mozilla.javascript.Context.FEATURE_ALLOW_OBJECT_AS_BOOLEAN;
+
 /**
  * This is the class that implements the runtime.
  *
@@ -397,7 +399,7 @@ public class ScriptRuntime {
                 {
                     return false;
                 }
-                if (Context.getContext().isVersionECMA1()) {
+                if (!Context.getContext().hasFeature(FEATURE_ALLOW_OBJECT_AS_BOOLEAN)) {
                     // pure ECMA
                     return true;
                 }
@@ -3087,6 +3089,21 @@ public class ScriptRuntime {
      */
     public static boolean eq(Object x, Object y)
     {
+        // Let equivalentValues have a chance first
+        if (x instanceof ScriptableObject) {
+            Object test = ((ScriptableObject)x).equivalentValues(y);
+            if (test != Scriptable.NOT_FOUND) {
+                return ((Boolean)test).booleanValue();
+            }
+        }
+
+        if (y instanceof ScriptableObject) {
+            Object test = ((ScriptableObject)y).equivalentValues(x);
+            if (test != Scriptable.NOT_FOUND) {
+                return ((Boolean)test).booleanValue();
+            }
+        }
+        
         if (x == null || x == Undefined.instance) {
             if (y == null || y == Undefined.instance) {
                 return true;
