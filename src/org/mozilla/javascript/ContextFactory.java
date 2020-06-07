@@ -294,6 +294,9 @@ public class ContextFactory
 
           case Context.FEATURE_INTEGER_WITHOUT_DECIMAL_PLACE:
               return false;
+			
+          case Context.FEATURE_ALLOW_OBJECT_AS_BOOLEAN:
+            return false;
         }
         // It is a bug to call the method with unknown featureIndex
         throw new IllegalArgumentException(String.valueOf(featureIndex));

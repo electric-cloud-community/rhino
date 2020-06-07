@@ -300,7 +300,7 @@ public class Context
      * @since 1.7 Release 3
      */
     public static final int FEATURE_V8_EXTENSIONS = 14;
-
+	
     /**
      * Defines how an undefined  "this" parameter is handled in certain calls. Previously Rhino
      * would convert an undefined "this" to null, whereas recent specs call for it to be treated
@@ -334,6 +334,12 @@ public class Context
      * 5 will be returned if feature is set, 5.0 otherwise.
      */
     public static final int FEATURE_INTEGER_WITHOUT_DECIMAL_PLACE = 18;
+
+    /**
+     * Enables non-ECMA style conversion from an object to a boolean under
+     * object control via getDefaultValue().
+     */
+    public static final int FEATURE_ALLOW_OBJECT_AS_BOOLEAN = 19;
 
     public static final String languageVersionProperty = "language version";
     public static final String errorReporterProperty   = "error reporter";
