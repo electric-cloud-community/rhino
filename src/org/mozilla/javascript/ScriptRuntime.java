@@ -6,6 +6,8 @@
 
 package org.mozilla.javascript;
 
+import static org.mozilla.javascript.Context.FEATURE_ALLOW_OBJECT_AS_BOOLEAN;
+
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
@@ -401,7 +403,7 @@ public class ScriptRuntime {
                         && ((ScriptableObject) val).avoidObjectDetection()) {
                     return false;
                 }
-                if (Context.getContext().isVersionECMA1()) {
+                if (!Context.getContext().hasFeature(FEATURE_ALLOW_OBJECT_AS_BOOLEAN)) {
                     // pure ECMA
                     return true;
                 }
@@ -3334,6 +3336,21 @@ public class ScriptRuntime {
      * <p>See ECMA 11.9
      */
     public static boolean eq(Object x, Object y) {
+        // Let equivalentValues have a chance first
+        if (x instanceof ScriptableObject) {
+            Object test = ((ScriptableObject) x).equivalentValues(y);
+            if (test != Scriptable.NOT_FOUND) {
+                return ((Boolean) test).booleanValue();
+            }
+        }
+
+        if (y instanceof ScriptableObject) {
+            Object test = ((ScriptableObject) y).equivalentValues(x);
+            if (test != Scriptable.NOT_FOUND) {
+                return ((Boolean) test).booleanValue();
+            }
+        }
+
         if (x == null || Undefined.isUndefined(x)) {
             if (y == null || Undefined.isUndefined(y)) {
                 return true;
