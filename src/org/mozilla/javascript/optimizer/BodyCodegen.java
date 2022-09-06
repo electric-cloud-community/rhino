@@ -3661,6 +3661,10 @@ Else pass the JS object in the aReg and 0.0 in the dReg.
         int type = node.getType();
         Node rChild = child.getNext();
 
+        // Remove this optimization so that comparison with null goes through
+        // ScriptRuntime and thus gets to our ScriptableObject.equivalentValues
+        // override.
+/*
         // Optimize if one of operands is null
         if (child.getType() == Token.NULL || rChild.getType() == Token.NULL) {
             // eq is symmetric in this case
@@ -3692,6 +3696,7 @@ Else pass the JS object in the aReg and 0.0 in the dReg.
             }
             cfw.add(ByteCode.GOTO, falseGOTO);
         } else {
+ */
             int child_dcp_register = nodeIsDirectCallParameter(child);
             if (child_dcp_register != -1
                 && rChild.getType() == Token.TO_OBJECT)
@@ -3749,7 +3754,7 @@ Else pass the JS object in the aReg and 0.0 in the dReg.
                     +")Z");
             cfw.add(testCode, trueGOTO);
             cfw.add(ByteCode.GOTO, falseGOTO);
-        }
+//        }
         if (stackInitial != cfw.getStackTop()) throw Codegen.badTree();
     }
 
